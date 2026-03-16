@@ -1,6 +1,11 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+// Use an env override when provided, otherwise target the backend on the same host at port 5000
+// This allows localhost development and mobile testing by changing REACT_APP_API_URL
+const apiHost = process.env.REACT_APP_API_URL || `http://${window.location.hostname}:5000/api`;
+axios.defaults.baseURL = apiHost;
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {

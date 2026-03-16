@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
+    "migrate": "node migrations/migrate_old_fields.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,9 +19,11 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "mongodb-memory-server": "^11.0.1",
     "mongoose": "^9.0.2",
     "nodemailer": "^7.0.12",
     "nodemon": "^3.1.11",
-    "react-router-dom": "^7.11.0"
+    "react-router-dom": "^7.11.0",
+    "socket.io": "^4.8.3"
   }
 }

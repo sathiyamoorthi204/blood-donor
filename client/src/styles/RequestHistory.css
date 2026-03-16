@@ -1,0 +1,93 @@
+/* ============================= */
+/* Request History Container */
+/* ============================= */
+*{
+  margin: 0;
+  padding: 0;
+}
+
+
+.request-history-container {
+  padding: 30px;
+  background: #f4f6f9;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ============================= */
+/* Title */
+/* ============================= */
+
+.request-history-title {
+  text-align: center;
+  color: #b71c1c;
+  font-size: 28px;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+/* ============================= */
+/* Table Styling */
+/* ============================= */
+
+.request-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Table Header */
+
+.request-history-table thead {
+  background-color: #b71c1c;
+  color: white;
+}
+
+.request-history-table th {
+  padding: 15px;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* Table Rows */
+
+.request-history-table td {
+  padding: 12px;
+  text-align: center;
+  font-size: 15px;
+  color: #333;
+}
+
+/* Alternate Row Color */
+
+.request-history-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* Hover Effect */
+
+.request-history-table tbody tr:hover {
+  background-color: #ffe5e5;
+  transition: 0.3s;
+}
+
+/* ============================= */
+/* Responsive */
+/* ============================= */
+
+@media screen and (max-width: 768px) {
+
+  .request-history-table th,
+  .request-history-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .request-history-title {
+    font-size: 22px;
+  }
+
+}

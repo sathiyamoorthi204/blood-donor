@@ -1,0 +1,75 @@
+/* Container styling */
+.form-container {
+  width: 100%;
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Heading */
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #d3S2f2f;
+}
+
+/* Form layout */
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Input and select fields */
+.form-container input,
+.form-container select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+/* Focus effect */
+.form-container input:focus,
+.form-container select:focus {
+  border-color: #d32f2f;
+  outline: none;
+  box-shadow: 0 0 5px rgba(211, 47, 47, 0.3);
+}
+
+/* Button styling */
+.form-container button {
+  padding: 12px;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Button hover */
+.form-container button:hover {
+  background-color: #b71c1c;
+  transform: translateY(-1px);
+}
+
+/* Button click effect */
+.form-container button:active {
+  transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 500px) {
+  .form-container {
+    margin: 30px 15px;
+    padding: 20px;
+  }
+}

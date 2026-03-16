@@ -1,129 +1,107 @@
 const express = require('express');
+const router = express.Router();
 const Request = require('../models/Request');
 const Donor = require('../models/Donor');
 const User = require('../models/User');
-const auth = require('../middleware/auth');
-const nodemailer = require('nodemailer');
+const { sendMail } = require('../utils/mailer');
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASS
-  }
-});
-
-const router = express.Router();
-
-// @route   GET api/requests
-// @desc    Get all requests
-// @access  Public
-router.get('/', async (req, res) => {
+// GET all requests
+router.get("/", async (req, res) => {
   try {
-    const requests = await Request.find().populate('requester', 'name email');
+    const requests = await Request.find().sort({ createdAt: -1 });
     res.json(requests);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).send("Server Error");
   }
 });
 
-// @route   POST api/requests
-// @desc    Create request
-// @access  Private
-router.post('/', auth, async (req, res) => {
-  const { bloodType, location, urgency, donor } = req.body;
+// POST new request
+router.post("/", async (req, res) => {
   try {
-    const request = new Request({
-      requester: req.user.id,
-      donor,
-      bloodType,
-      location,
-      urgency
-    });
-    await request.save();
+    const { requesterName, requesterEmail, bloodType, hospitalName, location } = req.body;
 
-    if (donor) {
-      const donorDoc = await Donor.findById(donor).populate('user');
-      const user = await User.findById(req.user.id);
-      transporter.sendMail({
-        from: process.env.EMAIL,
-        to: donorDoc.user.email,
-        subject: 'Blood Request',
-        text: `You have a blood request from ${user.name} (${user.email}) for ${bloodType} at ${location}. Urgency: ${urgency}`
-      });
+    const missing = [];
+    if (!requesterName) missing.push('requesterName');
+    if (!bloodType) missing.push('bloodType');
+    if (!hospitalName) missing.push('hospitalName');
+    if (!location) missing.push('location');
+
+    if (missing.length > 0) {
+      return res.status(400).json({ message: 'Missing required fields', missing });
     }
 
-    res.json(request);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
+    const newRequest = new Request({ requesterName, requesterEmail, bloodType, hospitalName, location });
+    await newRequest.save();
 
-// @route   PUT api/requests/:id
-// @desc    Update request
-// @access  Private
-router.put('/:id', auth, async (req, res) => {
-  const { bloodType, location, urgency, status } = req.body;
-  try {
-    let request = await Request.findById(req.params.id);
-    if (!request) return res.status(404).json({ msg: 'Request not found' });
-    if (request.requester.toString() !== req.user.id) return res.status(401).json({ msg: 'Not authorized' });
-    request = await Request.findByIdAndUpdate(req.params.id, { bloodType, location, urgency, status }, { new: true });
-    res.json(request);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
-
-// @route   DELETE api/requests/:id
-// @desc    Delete request
-// @access  Private
-router.delete('/:id', auth, async (req, res) => {
-  try {
-    let request = await Request.findById(req.params.id);
-    if (!request) return res.status(404).json({ msg: 'Request not found' });
-    if (request.requester.toString() !== req.user.id) return res.status(401).json({ msg: 'Not authorized' });
-    await Request.findByIdAndRemove(req.params.id);
-    res.json({ msg: 'Request removed' });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
-
-// @route   POST api/requests/request-all
-// @desc    Request all matching donors
-// @access  Private
-router.post('/request-all', auth, async (req, res) => {
-  const { bloodType, location } = req.body;
-  try {
-    const donors = await Donor.find({ bloodType, location }).populate('user');
-    const user = await User.findById(req.user.id);
-    for (const d of donors) {
-      const request = new Request({
-        requester: req.user.id,
-        donor: d._id,
-        bloodType,
-        location,
-        urgency: 'medium'
-      });
-      await request.save();
-      transporter.sendMail({
-        from: process.env.EMAIL,
-        to: d.user.email,
-        subject: 'Blood Request',
-        text: `Blood request from ${user.name} (${user.email}) for ${bloodType} at ${location}`
-      });
+    // Send request confirmation to requester (if email provided)
+    if (requesterEmail) {
+      (async () => {
+        try {
+          await sendMail({
+            from: process.env.EMAIL_FROM || process.env.EMAIL || 'no-reply@bloodapp.local',
+            to: requesterEmail,
+            subject: 'Blood Request Submitted',
+            html: `<p>Dear ${requesterName},</p><p>Thank you for submitting a blood request. Here are the details:</p><ul><li><strong>Blood Type Needed:</strong> ${bloodType}</li><li><strong>Hospital:</strong> ${hospitalName}</li><li><strong>Location:</strong> ${location}</li><li><strong>Request ID:</strong> ${newRequest._id}</li></ul><p>We are sending notifications to available donors matching your blood type. You will be updated as soon as a donor is found.</p><p>Regards,<br/>Blood Donor Team</p>`
+          });
+          console.log(`Request confirmation email sent to ${requesterEmail}`);
+        } catch (mailErr) {
+          console.error('Error sending request confirmation email:', mailErr.message);
+        }
+      })();
     }
-    res.json({ msg: 'Requests sent to all matching donors' });
+
+    // Find matching donors and send them notification emails
+    (async () => {
+      try {
+        const matchingDonors = await Donor.find({ bloodType: bloodType });
+        console.log(`Found ${matchingDonors.length} donor(s) matching blood type ${bloodType}`);
+        
+        for (const donor of matchingDonors) {
+          if (donor.email && donor.email !== 'N/A') {
+            try {
+              await sendMail({
+                from: process.env.EMAIL_FROM || process.env.EMAIL || 'no-reply@bloodapp.local',
+                to: donor.email,
+                subject: 'Urgent: Blood Donation Needed - Your Blood Type Match',
+                html: `<p>Dear ${donor.name},</p><p>An urgent blood donation request has been received matching your blood type (${bloodType}).</p><ul><li><strong>Requester:</strong> ${requesterName}</li><li><strong>Hospital:</strong> ${hospitalName}</li><li><strong>Location:</strong> ${location}</li><li><strong>Blood Type:</strong> ${bloodType}</li></ul><p>If you are available to donate, please contact this hospital or reply to this email.</p><p>Your donation could save a life!</p><p>Regards,<br/>Blood Donor Team</p>`
+              });
+              console.log(`Request notification sent to donor ${donor.email}`);
+            } catch (donorMailErr) {
+              console.error(`Error sending notification to donor ${donor.email}:`, donorMailErr.message);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error finding and notifying matching donors:', err.message);
+      }
+    })();
+
+    // Notify admins about new blood request
+    (async () => {
+      try {
+        const admins = await User.find({ role: 'admin' });
+        for (const admin of admins) {
+          if (admin.email && admin.email !== 'N/A') {
+            await sendMail({
+              from: process.env.EMAIL_FROM || process.env.EMAIL || 'no-reply@bloodapp.local',
+              to: admin.email,
+              subject: 'New Blood Donation Request',
+              html: `<p>A new blood donation request has been submitted:</p><ul><li><strong>Requester:</strong> ${requesterName}</li><li><strong>Requester Email:</strong> ${requesterEmail || 'Not provided'}</li><li><strong>Blood Type:</strong> ${bloodType}</li><li><strong>Hospital:</strong> ${hospitalName}</li><li><strong>Location:</strong> ${location}</li><li><strong>Request ID:</strong> ${newRequest._id}</li></ul><p>Please review and manage this request in the system.</p><p>Regards,<br/>Blood Donor App</p>`
+            });
+          }
+        }
+        console.log(`New request notification sent to ${admins.length} admin(s)`);
+      } catch (adminErr) {
+        console.error('Error notifying admins of new request:', adminErr.message);
+      }
+    })();
+
+    res.status(201).json(newRequest);
+
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Requests route error:', err);
+    res.status(500).json({ message: 'Server Error', error: err.message });
   }
 });
 
 module.exports = router;
-

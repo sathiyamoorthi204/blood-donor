@@ -46,3 +46,27 @@ This is a full-stack web application built with React, Node.js, and MongoDB for 
 - Ensure MongoDB is running before starting the server.
 - If ports 3000 (client) or 5000 (server) are in use, change them in the respective configurations.
 - Check console for error messages.
+
+## Environment variables (server)
+
+Create a `.env` file in the `server` folder with the following values (example):
+
+```
+MONGO_URI=mongodb://localhost:27017/bloodapp
+JWT_SECRET=your_jwt_secret_here
+PORT=5000
+
+# Optional - SMTP for registration emails
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=your_smtp_user
+SMTP_PASS=your_smtp_pass
+SMTP_SECURE=false
+EMAIL_FROM="Blood App <no-reply@example.com>"
+```
+
+If you want the client to target a different API host (useful for mobile devices), set `REACT_APP_API_URL` in the client environment (for example in `.env` at `client/.env`):
+
+```
+REACT_APP_API_URL=http://192.168.X.Y:5000/api
+```

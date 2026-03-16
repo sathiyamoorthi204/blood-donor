@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.home-container {
+  min-height: 100vh;
+  background: linear-gradient(to right, #b71c1c, #d32f2f);
+  font-family: Arial, sans-serif;
+  padding-bottom: 40px;
+}
+
+.home-title {
+  text-align: center;
+  color: whitesmoke;
+  padding-top: 2rem;
+  margin-bottom: 50px;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+/* Main Image */
+.image-container {
+  display: flex;
+  justify-content: center;
+}
+
+.main-image {
+  width: 70%;
+  max-width: 750px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  margin-top: 20px;
+}
+
+/* Buttons */
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 40px;
+}
+
+.login-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 14px 30px;
+  border-radius: 10px;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background-color: #218838;
+}
+
+.register-btn {
+  background-color: #218838;
+  color: white;
+  padding: 14px 30px;
+  border-radius: 10px;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.register-btn:hover {
+  background-color: #8e0000;
+}
+
+/* Feature Section */
+.features-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+
+.features-container img {
+  width: 350px;
+  height: 220px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}

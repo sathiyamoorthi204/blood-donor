@@ -1,57 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import '../App.css';
 
 const DonorList = () => {
   const location = useLocation();
-  const { location: searchLocation, bloodType } = location.state;
+  const { name: patientName, hospital: hospitalName, location: searchLocation, bloodType, urgency = 'medium' } = location.state;
   const [donors, setDonors] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/donors').then(res => {
+    axios.get('/donors').then(res => {
       const filtered = res.data.filter(d => d.location === searchLocation && d.bloodType === bloodType);
       setDonors(filtered);
     }).catch(err => console.error(err));
   }, [searchLocation, bloodType]);
-
+  
   const request = async (donorId) => {
     try {
-      await axios.post('http://localhost:5000/api/requests', {
+      await axios.post('/requests', {
         donor: donorId,
+        requesterName: patientName,
         bloodType,
         location: searchLocation,
-        urgency: 'medium'
+        hospitalName,
+        urgency
       });
       alert('Request sent to donor');
     } catch (err) {
-      alert('Failed to send request');
+      const msg = err?.response?.data?.message || err?.response?.data || err.message || 'Failed to send request';
+      alert(`Failed: ${msg}`);
     }
   };
 
   const requestAll = async () => {
     try {
-      await axios.post('http://localhost:5000/api/requests/request-all', {
-        bloodType,
-        location: searchLocation
-      });
+      // Server doesn't provide a bulk endpoint; send individual requests per donor
+      for (const d of donors) {
+        await axios.post('/requests', {
+          donor: d._id,
+          requesterName: patientName,
+          bloodType,
+          location: searchLocation,
+          hospitalName,
+          urgency
+        });
+      }
       alert('Requests sent to all matching donors');
     } catch (err) {
-      alert('Failed to send requests');
+      const msg = err?.response?.data?.message || err?.response?.data || err.message || 'Failed to send requests';
+      // show missing fields if provided
+      if (err?.response?.data?.missing) {
+        alert(`Failed: ${msg} - missing: ${err.response.data.missing.join(', ')}`);
+      } else {
+        alert(`Failed: ${msg}`);
+      }
     }
   };
 
   return (
-    <div>
-      <h2>Matching Donors</h2>
-      <button onClick={requestAll}>Request All</button>
-      {donors.map(d => (
-        <div key={d._id}>
-          <p>Name: {d.user.name}</p>
-          <p>Email: {d.user.email}</p>
-          <p>Phone: {d.phone}</p>
-          <button onClick={() => request(d._id)}>Request</button>
+    <div className="donor-list-wrapper">
+      <div className="donor-list-header">
+        <h2>Matching Donors</h2>
+        <button className="btn request-all" onClick={requestAll}>Request All</button>
+      </div>
+
+      {donors.length === 0 ? (
+        <p className="muted">No matching donors found.</p>
+      ) : (
+        <div className="donor-list">
+          {donors.map(d => (
+            <div key={d._id} className="donor-card">
+              <h3 className="donor-name">{d.name}</h3>
+              <p className="donor-email">Email: <span>{d.email && d.email !== 'N/A' ? d.email : 'N/A'}</span></p>
+              <p className="donor-phone">Phone: <span>{d.phone || 'N/A'}</span></p>
+              <p className="donor-blood">Blood Type: <span>{d.bloodType}</span></p>
+              <div className="donor-actions">
+                <button className="btn" onClick={() => request(d._id)}>Request</button>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 };

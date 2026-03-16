@@ -1,0 +1,126 @@
+/* ===== Page Wrapper ===== */
+*{
+  margin: 0;
+  padding: 0;
+}
+
+
+.patient-page {
+  min-height: 100vh;
+  background-color: #f4f6f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e53935, #b71c1c);
+  padding: 20px;
+}
+
+/* ===== Card ===== */
+.patient-form-card {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 500px;
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Title ===== */
+.patient-form-card h2 {
+  text-align: center;
+  color: #dc2626;
+  margin-bottom: 22px;
+  font-size: 24px;
+}
+
+/* ===== Form ===== */
+.patient-form-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Two-column rows on wider screens */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+/* ===== Inputs & Select ===== */
+.patient-form-card input,
+.patient-form-card select {
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+}
+
+/* Label styles */
+.patient-form-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label-text {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.patient-form-card input:focus,
+.patient-form-card select:focus {
+  border-color: #dc2626;
+}
+
+/* ===== Button ===== */
+.patient-form-card button {
+  margin-top: 10px;
+  background-color: #dc2626;
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.patient-form-card button:hover {
+  background-color: #b91c1c;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .patient-form-card {
+    padding: 20px;
+  }
+
+  .patient-form-card h2 {
+    font-size: 20px;
+  }
+
+  .patient-form-card input,
+  .patient-form-card select {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* Wider screen layout */
+@media (min-width: 700px) {
+  .patient-form-card {
+    max-width: 720px;
+    padding: 32px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .patient-form-card button {
+    width: 40%;
+    align-self: center;
+  }
+}

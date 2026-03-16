@@ -1,0 +1,92 @@
+/* ===== Page Wrapper ===== */
+
+*{
+  margin: 0;
+  padding: 0;
+}
+
+
+.request-page {
+  min-height: 100vh;
+  background-color: #f4f6f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* ===== Card ===== */
+.request-card {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 420px;
+  padding: 26px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Title ===== */
+.request-card h2 {
+  text-align: center;
+  color: #dc2626;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+/* ===== Form ===== */
+.request-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ===== Inputs & Select ===== */
+.request-card input,
+.request-card select {
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  background-color: #ffffff;
+}
+
+.request-card input:focus,
+.request-card select:focus {
+  border-color: #dc2626;
+}
+
+/* ===== Button ===== */
+.request-card button {
+  margin-top: 10px;
+  background-color: #dc2626;
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.request-card button:hover {
+  background-color: #b91c1c;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .request-card {
+    padding: 20px;
+  }
+
+  .request-card h2 {
+    font-size: 20px;
+  }
+
+  .request-card input,
+  .request-card select {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+

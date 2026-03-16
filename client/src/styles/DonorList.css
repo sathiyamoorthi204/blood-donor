@@ -1,0 +1,136 @@
+/* ===== Page Wrapper ===== */
+*{
+  margin: 0;
+  padding: 0;
+}
+
+
+.donor-list-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e53935, #b71c1c);
+  padding: 30px 20px;
+}
+
+/* ===== Header ===== */
+.donor-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.donor-list-header h2 {
+  color: #ffffff;
+  font-size: 26px;
+}
+
+/* ===== Buttons ===== */
+.btn {
+  background-color: #48a954;
+  color: #ffffff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.btn:hover {
+  background-color: #b91c1c;
+}
+
+.request-all {
+  background-color: #21ac1e;
+}
+
+.request-all:hover {
+  background-color: #0f8247;
+}
+
+/* ===== Empty Text ===== */
+.muted {
+  color: #6b7280;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 15px;
+}
+
+/* ===== Donor Grid ===== */
+.donor-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* ===== Donor Card ===== */
+.donor-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.donor-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== Card Content ===== */
+.donor-name {
+  color: #111827;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.donor-email,
+.donor-phone {
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.donor-email span,
+.donor-phone span {
+  color: #111827;
+  font-weight: 500;
+}
+
+/* ===== Actions ===== */
+.donor-actions {
+  margin-top: 14px;
+  text-align: right;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .donor-list-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .donor-list-header h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .donor-card {
+    padding: 16px;
+  }
+
+  .donor-name {
+    font-size: 16px;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .donor-actions {
+    text-align: center;
+  }
+}

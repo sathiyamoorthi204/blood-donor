@@ -1,0 +1,149 @@
+/* Page background */
+*{
+  margin: 0;
+  padding: 0;
+}
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e53935, #b71c1c);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Main container */
+.auth-container {
+  display: flex;
+  width: 900px;
+  max-width: 95%;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Form section */
+.auth-form-wrapper {
+  flex: 1;
+  padding: 40px;
+}
+
+.auth-header h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #b71c1c;
+}
+
+.auth-subtitle {
+  margin-top: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Error message */
+.error-message {
+  margin: 15px 0;
+  padding: 10px;
+  background: #fdecea;
+  color: #c62828;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* Form fields */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.form-group input:focus {
+  border-color: #e53935;
+}
+
+/* Button */
+.btn-primary {
+  background: #e53935;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+}
+
+.btn-primary:hover {
+  background: #c62828;
+}
+
+.btn-primary:disabled {
+  background: #ef9a9a;
+  cursor: not-allowed;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Footer */
+.auth-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.auth-footer a {
+  color: #e53935;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Image section */
+.auth-image {
+  flex: 1;
+  background: linear-gradient(135deg, #ffcdd2, #ef9a9a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-placeholder {
+  text-align: center;
+  color: #b71c1c;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+  }
+
+  .auth-image {
+    display: none;
+  }
+}
