@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import DonorForm from "./DonorForm";
 import RequestForm from "./RequestForm";
 import { AuthContext } from "../context/AuthContext";
@@ -7,6 +8,26 @@ import "../styles/Dashboard.css";
 
 const Dashboard = () => {
   const { auth, logout } = useContext(AuthContext);
+  const [stats, setStats] = useState({ donors: 0, requests: 0, units: 0 });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const donorRes = await axios.get("/donors/count");
+        const requestRes = await axios.get("/requests");
+        
+        setStats({
+          donors: donorRes.data.count || 0,
+          requests: requestRes.data.length || 0,
+          units: (requestRes.data.length * 2) || 0
+        });
+      } catch (err) {
+        console.error("Error fetching stats:", err.message);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   if (!auth || !auth.user) {
     return <h2>Loading...</h2>;
@@ -74,17 +95,17 @@ const Dashboard = () => {
 
           <div className="stat-card">
             <h3>Total Donors</h3>
-            <p>120</p>
+            <p>{stats.donors}</p>
           </div>
 
           <div className="stat-card">
             <h3>Blood Requests</h3>
-            <p>45</p>
+            <p>{stats.requests}</p>
           </div>
 
           <div className="stat-card">
             <h3>Available Units</h3>
-            <p>78</p>
+            <p>{stats.units}</p>
           </div>
 
         </div>

@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+.env
+.env.local
+.env.*.local
+
+# Build files
+/build
+/dist
+.next
+out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Duplicate project folders (keep only client/ and server/)
+blood-alert-project/
+blood-alert/
+
+# Testing
+.coverage
+.nyc_output

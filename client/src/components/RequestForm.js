@@ -36,7 +36,7 @@ const RequestForm = () => {
       <h2>Post Blood Request</h2>
       <form onSubmit={onSubmit}>
         <input name="requesterName" value={formData.requesterName} onChange={onChange} placeholder="Requester Name" required />
-        <input name="requesterEmail" value={formData.requesterEmail} onChange={onChange} placeholder="Requester Email (optional)" type="email" />
+        <input name="requesterEmail" value={formData.requesterEmail} onChange={onChange} placeholder="Requester Email" type="email" required />
         <select name="bloodType" value={formData.bloodType} onChange={onChange} required>
           <option value="">Select Blood Type</option>
           <option value="A+">A+</option>
