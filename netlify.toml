@@ -1,6 +1,8 @@
 # Netlify configuration for Blood Donor Management System
 [build]
-  # Build command - runs the React build from client directory
+  # Base directory (root of the repo)
+  base = "/"
+  # Build command - runs npm install and React build
   command = "cd client && npm ci && npm run build"
   # Directory to publish (the React build output)
   publish = "client/build"
