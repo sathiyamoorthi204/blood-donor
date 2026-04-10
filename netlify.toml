@@ -1,6 +1,6 @@
 [build]
   base = "client"
-  command = "npm ci && npm run build"
+  command = "npm start && npm run build"
   publish = "build"
 
 [build.environment]
