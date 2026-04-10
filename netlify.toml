@@ -1,10 +1,9 @@
 [build]
   base = "client"
-  command = "npm ci && npm run build"
+  command = "npm install && npm run build"
   publish = "build"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  conditions = { NOT = [{"Cookie" = "nf_skip_redirect"}] }
