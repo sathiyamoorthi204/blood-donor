@@ -1,11 +1,12 @@
 [build]
   base = "client"
-  command = "npm install && npm run build"
+  command = "npm ci && npm run build"
   publish = "build"
 
 [env]
   [env.production]
     NODE_ENV = "production"
+    REACT_APP_API_URL = "https://blood-alert-project-1.onrender.com/api"
 
 [[redirects]]
   from = "/*"
