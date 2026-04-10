@@ -19,6 +19,8 @@ const io = socketIo(server, {
       "http://localhost:3000",
       "http://localhost:3001",
       "http://127.0.0.1:3000",
+      "https://blood-alert-project.netlify.app",
+      /https:\/\/.*\.netlify\.app$/,
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
@@ -31,7 +33,16 @@ const io = socketIo(server, {
 // =============================
 // MIDDLEWARE
 // =============================
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3000",
+    "https://blood-alert-project.netlify.app",
+    /https:\/\/.*\.netlify\.app$/,
+  ],
+  credentials: true,
+}));
 app.use(express.json());
 
 // =============================
