@@ -1,19 +1,12 @@
-# Netlify configuration for Blood Donor Management System
 [build]
-  # Base directory (root of the repo)
-  base = "/"
-  # Build command - runs npm install and React build
-  command = "cd client && npm ci && npm run build"
-  # Directory to publish (the React build output)
-  publish = "client/build"
+  base = "client"
+  command = "npm install && npm run build"
+  publish = "build"
 
 [env]
-  # Production environment
   [env.production]
-    # Environment variables for production
     NODE_ENV = "production"
 
-# Redirect rules for React Router
 [[redirects]]
   from = "/*"
   to = "/index.html"
