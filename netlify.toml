@@ -2,9 +2,12 @@
   base = "client"
   command = "npm ci && npm run build"
   publish = "build"
-  environment = { REACT_APP_API_URL = "https://blood-donor-2-ybnk.onrender.com/api" }
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[env]
+  [env.production]
+    REACT_APP_API_URL = "https://blood-donor-2-ybnk.onrender.com/api"
