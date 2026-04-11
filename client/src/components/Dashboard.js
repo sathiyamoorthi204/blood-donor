@@ -27,6 +27,12 @@ const Dashboard = () => {
     };
 
     fetchStats();
+    
+    // Setup polling for real-time data updates every 3 seconds
+    const interval = setInterval(fetchStats, 3000);
+    
+    // Cleanup interval on unmount
+    return () => clearInterval(interval);
   }, []);
 
   if (!auth || !auth.user) {
@@ -56,11 +62,7 @@ const Dashboard = () => {
             🔍 Search Donors
           </Link>
 
-          {auth.user.role === "requester" && (
-            <Link to="/request-form" className="nav-link">
-              📄 Request Blood
-            </Link>
-          )}
+
 
           {/* ✅ ADD THIS */}
           {auth.user.role === "donor" && (

@@ -55,6 +55,7 @@ const Login = () => {
                 value={formData.email}
                 onChange={onChange}
                 placeholder="Enter your email"
+                autoComplete="username"
                 required
               />
             </div>

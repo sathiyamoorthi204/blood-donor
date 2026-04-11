@@ -32,7 +32,7 @@ const RequestForm = () => {
   };
 
   return (
-    <div>
+    <div className="request-card">
       <h2>Post Blood Request</h2>
       <form onSubmit={onSubmit}>
         <input name="requesterName" value={formData.requesterName} onChange={onChange} placeholder="Requester Name" required />
