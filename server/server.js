@@ -51,7 +51,10 @@ app.use(express.json());
 const connectToMongo = async () => {
   try {
     if (process.env.MONGO_URI) {
-      await mongoose.connect(process.env.MONGO_URI);
+      await mongoose.connect(process.env.MONGO_URI, {
+        serverSelectionTimeoutMS: 5000,
+        family: 4 // Force IPv4 to fix Render's Node 22 IPv6 DNS resolving bug with MongoDB Atlas
+      });
       console.log("✅ MongoDB connected (MONGO_URI)");
       
       // Clean up old donor documents with old schema on startup

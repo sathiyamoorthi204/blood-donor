@@ -33,3 +33,4 @@ blood-alert/
 # Testing
 .coverage
 .nyc_output
+server/.env
