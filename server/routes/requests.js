@@ -53,10 +53,28 @@ router.post("/", async (req, res) => {
     // Find matching donors and send them notification emails
     (async () => {
       try {
-        const matchingDonors = await Donor.find({ bloodType: bloodType });
-        console.log(`Found ${matchingDonors.length} donor(s) matching blood type ${bloodType}`);
+        const { donor: specificDonorId } = req.body;
+        let donorsToNotify = [];
+
+        if (specificDonorId) {
+          // Notify only the specific donor
+          const donor = await Donor.findById(specificDonorId);
+          if (donor) {
+            donorsToNotify = [donor];
+            console.log(`Targeting specific donor: ${donor.email}`);
+          } else {
+            console.error(`Specific donor not found: ${specificDonorId}`);
+          }
+        } else {
+          // Find all matching donors (blood type and location)
+          donorsToNotify = await Donor.find({ 
+            bloodType: bloodType,
+            location: { $regex: new RegExp(location, "i") } // Case-insensitive location match
+          });
+          console.log(`Found ${donorsToNotify.length} donor(s) matching blood type ${bloodType} and location ${location}`);
+        }
         
-        for (const donor of matchingDonors) {
+        for (const donor of donorsToNotify) {
           if (donor.email && donor.email !== 'N/A') {
             try {
               await sendMail({
@@ -72,7 +90,7 @@ router.post("/", async (req, res) => {
           }
         }
       } catch (err) {
-        console.error('Error finding and notifying matching donors:', err.message);
+        console.error('Error finding and notifying donors:', err.message);
       }
     })();
 

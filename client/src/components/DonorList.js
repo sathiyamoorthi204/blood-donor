@@ -34,21 +34,18 @@ const DonorList = () => {
 
   const requestAll = async () => {
     try {
-      // Server doesn't provide a bulk endpoint; send individual requests per donor
-      for (const d of donors) {
-        await axios.post('/requests', {
-          donor: d._id,
-          requesterName: patientName,
-          bloodType,
-          location: searchLocation,
-          hospitalName,
-          urgency
-        });
-      }
+      // Send a single request without a specific donor ID
+      // The backend will now notify all donors matching the blood type and location
+      await axios.post('/requests', {
+        requesterName: patientName,
+        bloodType,
+        location: searchLocation,
+        hospitalName,
+        urgency
+      });
       alert('Requests sent to all matching donors');
     } catch (err) {
       const msg = err?.response?.data?.message || err?.response?.data || err.message || 'Failed to send requests';
-      // show missing fields if provided
       if (err?.response?.data?.missing) {
         alert(`Failed: ${msg} - missing: ${err.response.data.missing.join(', ')}`);
       } else {
